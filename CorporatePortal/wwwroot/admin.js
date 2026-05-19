@@ -1,121 +1,20 @@
-const api = '/api/portal';
-let pages = [];
-let currentPage;
-
-const el = id => document.getElementById(id);
-
-async function load() {
-  pages = await fetch(`${api}/pages`).then(r => r.json());
-  if (!pages.length) return;
-
-  if (!currentPage) {
-    currentPage = pages[0];
-  } else {
-    currentPage = pages.find(p => p.id === currentPage.id) || pages[0];
-  }
-
-  renderPageSelect();
-  render();
-}
-
-function renderPageSelect() {
-  el('pageSelect').innerHTML = pages.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
-  el('pageSelect').value = currentPage.id;
-  el('pageSelect').onchange = async e => {
-    currentPage = await fetch(`${api}/pages/${e.target.value}`).then(r => r.json());
-    render();
-  };
-}
-
-function render() {
-  el('titleInput').value = currentPage.title;
-  el('welcomeInput').value = currentPage.welcomeText;
-  el('bgType').value = currentPage.backgroundType;
-  el('bgValue').value = currentPage.backgroundValue || '';
-
-  const groups = [...currentPage.linkGroups].sort((a, b) => a.sortOrder - b.sortOrder);
-  el('groupSelect').innerHTML = groups.map(g => `<option value="${g.id}">${g.title}</option>`).join('');
-
-  el('preview').innerHTML = `
-    <h3>${currentPage.title}</h3>
-    <p>${currentPage.welcomeText}</p>
-    ${groups.map(g => `
-      <article class="group">
-        <h4>${g.title}</h4>
-        ${(g.links || []).sort((a, b) => a.sortOrder - b.sortOrder).map(l => `<a href="${l.url}" target="_blank">${l.title}</a>`).join('')}
-      </article>
-    `).join('')}
-  `;
-}
-
-el('savePage').onclick = async () => {
-  const payload = {
-    ...currentPage,
-    title: el('titleInput').value,
-    welcomeText: el('welcomeInput').value,
-    backgroundType: el('bgType').value,
-    backgroundValue: el('bgValue').value
-  };
-  currentPage = await fetch(`${api}/pages/${currentPage.id}`, {
-    method: 'PUT',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(payload)
-  }).then(r => r.json());
-
-  await load();
-};
-
-el('createPage').onclick = async () => {
-  const payload = {
-    title: `Новая страница ${pages.length + 1}`,
-    welcomeText: 'Описание страницы',
-    backgroundType: 'color',
-    backgroundValue: '#eef2ff',
-    isActive: true
-  };
-  await fetch(`${api}/pages`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-  await load();
-};
-
-el('addGroup').onclick = async () => {
-  const payload = {
-    title: el('groupTitle').value,
-    sortOrder: currentPage.linkGroups.length + 1,
-    isVisible: true
-  };
-  await fetch(`${api}/pages/${currentPage.id}/groups`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-
-  currentPage = await fetch(`${api}/pages/${currentPage.id}`).then(r => r.json());
-  render();
-};
-
-el('addLink').onclick = async () => {
-  const groupId = el('groupSelect').value;
-  const selectedGroup = currentPage.linkGroups.find(g => g.id === Number(groupId));
-  const payload = {
-    title: el('linkTitle').value,
-    url: el('linkUrl').value,
-    sortOrder: (selectedGroup?.links?.length || 0) + 1,
-    isActive: true,
-    openInNewTab: true
-  };
-
-  await fetch(`${api}/pages/${currentPage.id}/groups/${groupId}/links`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-
-  currentPage = await fetch(`${api}/pages/${currentPage.id}`).then(r => r.json());
-  render();
-};
-
+const api='/api/portal';let pages=[],currentPage;const el=id=>document.getElementById(id);
+const defaultWidgets=[{type:'clock',title:'Часы'},{type:'date',title:'Дата'},{type:'weather',title:'Погода (заглушка)'},{type:'quote',title:'Цитата дня'}];
+async function load(){pages=await fetch(`${api}/pages`).then(r=>r.json());if(!pages.length)return;currentPage=!currentPage?pages[0]:(pages.find(p=>p.id===currentPage.id)||pages[0]);renderPageSelect();render();}
+function renderPageSelect(){el('pageSelect').innerHTML=pages.map(p=>`<option value="${p.id}">${p.title}</option>`).join('');el('pageSelect').value=currentPage.id;el('pageSelect').onchange=async e=>{currentPage=await fetch(`${api}/pages/${e.target.value}`).then(r=>r.json());render();};}
+function cssVarsFromTheme(){const accent=el('accentColor').value,card=el('cardBgColor').value,op=el('cardOpacity').value;const rgb=parseInt(card.slice(1),16);const r=(rgb>>16)&255,g=(rgb>>8)&255,b=rgb&255;return `:root{--accent:${accent};--card-bg:rgba(${r},${g},${b},${op});}`;}
+function render(){el('titleInput').value=currentPage.title;el('welcomeInput').value=currentPage.welcomeText;el('bgType').value=currentPage.backgroundType;el('bgValue').value=currentPage.backgroundValue||'';el('themeCss').value=currentPage.themeCss||'';
+const groups=[...currentPage.linkGroups].sort((a,b)=>a.sortOrder-b.sortOrder);el('groupSelect').innerHTML=groups.map(g=>`<option value="${g.id}">${g.title}</option>`).join('');el('groupSortSelect').innerHTML=groups.map(g=>`<option value="${g.id}">${g.sortOrder}. ${g.title}</option>`).join('');
+const gid=Number(el('groupSelect').value||groups[0]?.id);const links=(groups.find(g=>g.id===gid)?.links||[]).sort((a,b)=>a.sortOrder-b.sortOrder);el('linkSortSelect').innerHTML=links.map(l=>`<option value="${l.id}">${l.sortOrder}. ${l.title}</option>`).join('');
+const set=new Set((currentPage.widgets||[]).filter(w=>w.isVisible).map(w=>w.type));document.querySelectorAll('.widget-toggle').forEach(c=>c.checked=set.has(c.value));
+el('preview').innerHTML=`<style>${currentPage.themeCss||''}</style><h3>${currentPage.title}</h3><p>${currentPage.welcomeText}</p>${groups.map(g=>`<article class="group"><h4>${g.title}</h4>${(g.links||[]).sort((a,b)=>a.sortOrder-b.sortOrder).map(l=>`<a>${l.title}</a>`).join('')}</article>`).join('')}`;}
+async function savePage(){const payload={...currentPage,title:el('titleInput').value,welcomeText:el('welcomeInput').value,backgroundType:el('bgType').value,backgroundValue:el('bgValue').value,themeCss:el('themeCss').value,widgets:currentPage.widgets||[]};currentPage=await fetch(`${api}/pages/${currentPage.id}`,{method:'PUT',headers:{'content-type':'application/json'},body:JSON.stringify(payload)}).then(r=>r.json());await load();}
+el('savePage').onclick=savePage;
+el('createPage').onclick=async()=>{await fetch(`${api}/pages`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({title:`Новая страница ${pages.length+1}`,welcomeText:'Описание страницы',backgroundType:'color',backgroundValue:'#eef2ff',isActive:true,themeCss:':root{--accent:#1d4ed8;--card-bg:rgba(255,255,255,.9);}',widgets:[]})});await load();};
+el('addGroup').onclick=async()=>{await fetch(`${api}/pages/${currentPage.id}/groups`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({title:el('groupTitle').value,sortOrder:currentPage.linkGroups.length+1,isVisible:true})});currentPage=await fetch(`${api}/pages/${currentPage.id}`).then(r=>r.json());render();};
+el('addLink').onclick=async()=>{const groupId=el('groupSelect').value;const g=currentPage.linkGroups.find(x=>x.id===Number(groupId));await fetch(`${api}/pages/${currentPage.id}/groups/${groupId}/links`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({title:el('linkTitle').value,url:el('linkUrl').value,sortOrder:(g?.links?.length||0)+1,isActive:true,openInNewTab:true})});currentPage=await fetch(`${api}/pages/${currentPage.id}`).then(r=>r.json());render();};
+async function reorder(kind,dir){if(kind==='group'){const ids=[...el('groupSortSelect').options].map(o=>Number(o.value));const idx=el('groupSortSelect').selectedIndex;if(idx<0)return;const ni=idx+dir;if(ni<0||ni>=ids.length)return;[ids[idx],ids[ni]]=[ids[ni],ids[idx]];currentPage=await fetch(`${api}/pages/${currentPage.id}/groups/reorder`,{method:'PUT',headers:{'content-type':'application/json'},body:JSON.stringify(ids)}).then(r=>r.json());render();el('groupSortSelect').selectedIndex=ni;}else{const gid=el('groupSelect').value;const ids=[...el('linkSortSelect').options].map(o=>Number(o.value));const idx=el('linkSortSelect').selectedIndex;if(idx<0)return;const ni=idx+dir;if(ni<0||ni>=ids.length)return;[ids[idx],ids[ni]]=[ids[ni],ids[idx]];currentPage=await fetch(`${api}/pages/${currentPage.id}/groups/${gid}/links/reorder`,{method:'PUT',headers:{'content-type':'application/json'},body:JSON.stringify(ids)}).then(r=>r.json());render();el('linkSortSelect').selectedIndex=ni;}}
+el('groupUp').onclick=()=>reorder('group',-1);el('groupDown').onclick=()=>reorder('group',1);el('linkUp').onclick=()=>reorder('link',-1);el('linkDown').onclick=()=>reorder('link',1);el('groupSelect').onchange=render;
+document.querySelectorAll('.widget-toggle').forEach(c=>c.onchange=()=>{const type=c.value;let widgets=currentPage.widgets||[];let ex=widgets.find(w=>w.type===type);if(!ex&&c.checked){widgets.push({id:Date.now()+Math.floor(Math.random()*1000),type,title:defaultWidgets.find(w=>w.type===type).title,sortOrder:widgets.length+1,isVisible:true});}if(ex){ex.isVisible=c.checked;}currentPage.widgets=widgets;});
+el('applyTheme').onclick=()=>{el('themeCss').value=cssVarsFromTheme();};
 load();

@@ -48,4 +48,18 @@ public class PortalController(PortalRepository repository) : ControllerBase
         var added = repository.AddLink(pageId, groupId, link);
         return added is null ? NotFound() : Ok(added);
     }
+
+    [HttpPut("pages/{pageId:int}/groups/reorder")]
+    public ActionResult<PortalPage> ReorderGroups(int pageId, [FromBody] List<int> groupIds)
+    {
+        var updated = repository.ReorderGroups(pageId, groupIds);
+        return updated is null ? NotFound() : Ok(updated);
+    }
+
+    [HttpPut("pages/{pageId:int}/groups/{groupId:int}/links/reorder")]
+    public ActionResult<PortalPage> ReorderLinks(int pageId, int groupId, [FromBody] List<int> linkIds)
+    {
+        var updated = repository.ReorderLinks(pageId, groupId, linkIds);
+        return updated is null ? NotFound() : Ok(updated);
+    }
 }

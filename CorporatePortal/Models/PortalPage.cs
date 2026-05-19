@@ -1,4 +1,4 @@
-﻿namespace CorporatePortal.Api.Models
+namespace CorporatePortal.Api.Models
 {
     public class PortalPage
     {
@@ -16,6 +16,23 @@
 
         public bool IsActive { get; set; } = true;
 
-        public List<LinkGroup> LinkGroups { get; set; } = new List<LinkGroup>();
+        public string? ThemeCss { get; set; }
+
+        public List<WidgetConfig> Widgets { get; set; } = new();
+
+        public List<LinkGroup> LinkGroups { get; set; } = new();
+    }
+
+    public class WidgetConfig
+    {
+        public int Id { get; set; }
+
+        public string Type { get; set; } = "clock";
+
+        public string Title { get; set; } = string.Empty;
+
+        public int SortOrder { get; set; }
+
+        public bool IsVisible { get; set; } = true;
     }
 }
