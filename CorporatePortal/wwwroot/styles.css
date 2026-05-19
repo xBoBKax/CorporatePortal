@@ -1,0 +1,8 @@
+body{font-family:Arial,sans-serif;margin:0;padding:20px;transition:background .3s,color .3s}
+header{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+main{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:20px}
+.panel{background:rgba(255,255,255,.86);padding:14px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+input,select,button{display:block;width:100%;padding:8px;margin:6px 0}
+#groupsContainer{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.group{background:rgba(255,255,255,.9);padding:12px;border-radius:10px}
+a{display:block;margin:6px 0}

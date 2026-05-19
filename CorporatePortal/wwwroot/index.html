@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Corporate Portal</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1 id="pageTitle"></h1>
+    <p id="welcomeText"></p>
+    <select id="pageSelect"></select>
+  </header>
+  <main>
+    <section class="panel">
+      <h2>Управление страницей</h2>
+      <input id="titleInput" placeholder="Название страницы" />
+      <input id="welcomeInput" placeholder="Приветственный текст" />
+      <select id="bgType"><option value="color">Цвет</option><option value="gradient">Градиент</option><option value="image">Изображение URL</option></select>
+      <input id="bgValue" placeholder="#f2f4f8 / linear-gradient(...) / https://..." />
+      <button id="savePage">Сохранить страницу</button>
+      <button id="createPage">Создать новую страницу</button>
+    </section>
+    <section class="panel">
+      <h2>Добавить раздел</h2>
+      <input id="groupTitle" placeholder="Название раздела" />
+      <button id="addGroup">Добавить раздел</button>
+    </section>
+    <section class="panel">
+      <h2>Добавить ссылку</h2>
+      <select id="groupSelect"></select>
+      <input id="linkTitle" placeholder="Текст ссылки" />
+      <input id="linkUrl" placeholder="https://..." />
+      <button id="addLink">Добавить ссылку</button>
+    </section>
+    <section id="widgets" class="panel">
+      <h2>Виджеты</h2>
+      <div id="clock"></div>
+      <div id="today"></div>
+    </section>
+    <section id="groupsContainer"></section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
