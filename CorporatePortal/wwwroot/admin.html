@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Админка портала</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Админка корпоративного портала</h1>
+      <p>Управление страницами, разделами и ссылками</p>
+    </div>
+    <a class="admin-link" href="/">Открыть портал</a>
+  </header>
+
+  <main class="admin-grid">
+    <section class="panel">
+      <h2>Страницы</h2>
+      <label>
+        Текущая страница
+        <select id="pageSelect"></select>
+      </label>
+      <input id="titleInput" placeholder="Название страницы" />
+      <input id="welcomeInput" placeholder="Приветственный текст" />
+      <select id="bgType"><option value="color">Цвет</option><option value="gradient">Градиент</option><option value="image">Изображение URL</option></select>
+      <input id="bgValue" placeholder="#f2f4f8 / linear-gradient(...) / https://..." />
+      <button id="savePage">Сохранить страницу</button>
+      <button id="createPage">Создать страницу</button>
+    </section>
+
+    <section class="panel">
+      <h2>Разделы</h2>
+      <input id="groupTitle" placeholder="Название раздела" />
+      <button id="addGroup">Добавить раздел</button>
+    </section>
+
+    <section class="panel">
+      <h2>Ссылки</h2>
+      <select id="groupSelect"></select>
+      <input id="linkTitle" placeholder="Текст ссылки" />
+      <input id="linkUrl" placeholder="https://..." />
+      <button id="addLink">Добавить ссылку</button>
+    </section>
+
+    <section class="panel" id="previewContainer">
+      <h2>Предпросмотр текущей страницы</h2>
+      <div id="preview"></div>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

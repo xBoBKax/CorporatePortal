@@ -1,8 +1,12 @@
-body{font-family:Arial,sans-serif;margin:0;padding:20px;transition:background .3s,color .3s}
-header{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
-main{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:20px}
-.panel{background:rgba(255,255,255,.86);padding:14px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+body{font-family:Arial,sans-serif;margin:0;padding:20px;transition:background .3s,color .3s;background:#f2f4f8;color:#111}
+.topbar{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px}
+.topbar-controls{display:flex;gap:12px;align-items:end;flex-wrap:wrap}
+.admin-link{display:inline-block;padding:8px 12px;background:#1d4ed8;color:#fff;text-decoration:none;border-radius:8px}
+.panel{background:rgba(255,255,255,.9);padding:14px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:12px}
+main{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
 input,select,button{display:block;width:100%;padding:8px;margin:6px 0}
-#groupsContainer{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
 .group{background:rgba(255,255,255,.9);padding:12px;border-radius:10px}
 a{display:block;margin:6px 0}
+#groupsContainer{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+#previewContainer{grid-column:1/-1}
