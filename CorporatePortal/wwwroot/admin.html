@@ -1,10 +1,69 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Админка портала</title><link rel="stylesheet" href="styles.css"/></head><body>
-<header class="topbar"><div><h1>Админка корпоративного портала</h1><p>Управление контентом, стилем и виджетами</p></div><a class="admin-link" href="/">Открыть портал</a></header>
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Админка портала</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<header class="topbar">
+  <div><h1>Админка корпоративного портала</h1><p>Drag-and-drop сортировка, виджеты и style editor</p></div>
+  <a class="admin-link" href="/">Открыть портал</a>
+</header>
 <main class="admin-grid">
-<section class="panel"><h2>Страницы</h2><label>Текущая страница<select id="pageSelect"></select></label><input id="titleInput" placeholder="Название страницы"/><input id="welcomeInput" placeholder="Приветственный текст"/><select id="bgType"><option value="color">Цвет</option><option value="gradient">Градиент</option><option value="image">Изображение URL</option></select><input id="bgValue" placeholder="#f2f4f8 / linear-gradient(...) / https://..."/><button id="savePage">Сохранить страницу</button><button id="createPage">Создать страницу</button></section>
-<section class="panel"><h2>Разделы и сортировка</h2><input id="groupTitle" placeholder="Название раздела"/><button id="addGroup">Добавить раздел</button><select id="groupSortSelect" size="6"></select><div class="row"><button id="groupUp">↑ Выше</button><button id="groupDown">↓ Ниже</button></div></section>
-<section class="panel"><h2>Ссылки и сортировка</h2><select id="groupSelect"></select><input id="linkTitle" placeholder="Текст ссылки"/><input id="linkUrl" placeholder="https://..."/><button id="addLink">Добавить ссылку</button><select id="linkSortSelect" size="8"></select><div class="row"><button id="linkUp">↑ Выше</button><button id="linkDown">↓ Ниже</button></div></section>
-<section class="panel"><h2>Виджеты</h2><p class="hint">Стандартные виджеты: часы, дата, погода(заглушка), цитата дня.</p><label><input type="checkbox" class="widget-toggle" value="clock"/> Часы</label><label><input type="checkbox" class="widget-toggle" value="date"/> Дата</label><label><input type="checkbox" class="widget-toggle" value="weather"/> Погода</label><label><input type="checkbox" class="widget-toggle" value="quote"/> Цитата дня</label></section>
-<section class="panel"><h2>Графический стиль-редактор (без кода)</h2><label>Акцентный цвет<input type="color" id="accentColor" value="#1d4ed8"/></label><label>Фон карточек<input type="color" id="cardBgColor" value="#ffffff"/></label><label>Прозрачность карточек<input type="range" id="cardOpacity" min="0.3" max="1" step="0.05" value="0.9"/></label><button id="applyTheme">Применить стиль</button><details><summary>Расширенный CSS</summary><textarea id="themeCss" rows="6"></textarea></details></section>
-<section class="panel" id="previewContainer"><h2>Предпросмотр</h2><div id="preview"></div></section>
-</main><script src="admin.js"></script></body></html>
+  <section class="panel">
+    <h2>Страница</h2>
+    <label>Текущая страница<select id="pageSelect"></select></label>
+    <input id="titleInput" placeholder="Название страницы"/>
+    <input id="welcomeInput" placeholder="Приветственный текст"/>
+    <select id="bgType"><option value="color">Цвет</option><option value="gradient">Градиент</option><option value="image">Изображение URL</option></select>
+    <input id="bgValue" placeholder="#f2f4f8 / linear-gradient(...) / https://..."/>
+    <button id="savePage">Сохранить страницу</button>
+    <button id="createPage">Создать страницу</button>
+  </section>
+
+  <section class="panel">
+    <h2>Разделы (drag & drop)</h2>
+    <input id="groupTitle" placeholder="Название раздела"/>
+    <button id="addGroup">Добавить раздел</button>
+    <ul id="groupSortable" class="sortable-list"></ul>
+  </section>
+
+  <section class="panel">
+    <h2>Ссылки (drag & drop)</h2>
+    <select id="groupSelect"></select>
+    <input id="linkTitle" placeholder="Текст ссылки"/>
+    <input id="linkUrl" placeholder="https://..."/>
+    <button id="addLink">Добавить ссылку</button>
+    <ul id="linkSortable" class="sortable-list"></ul>
+  </section>
+
+  <section class="panel">
+    <h2>Виджеты / embed-блоки</h2>
+    <p class="hint">Можно включать стандартные виджеты и добавить custom HTML/iframe как отдельный блок.</p>
+    <label><input type="checkbox" class="widget-toggle" value="clock"/> Часы</label>
+    <label><input type="checkbox" class="widget-toggle" value="date"/> Дата</label>
+    <label><input type="checkbox" class="widget-toggle" value="weather"/> Погода</label>
+    <label><input type="checkbox" class="widget-toggle" value="quote"/> Цитата дня</label>
+    <input id="embedTitle" placeholder="Название embed-блока"/>
+    <textarea id="embedHtml" rows="4" placeholder="<iframe ...></iframe> или другой HTML"></textarea>
+    <button id="addEmbedWidget">Добавить embed-блок</button>
+    <ul id="widgetSortable" class="sortable-list"></ul>
+  </section>
+
+  <section class="panel">
+    <h2>Графический редактор стилей</h2>
+    <label>Акцентный цвет<input type="color" id="accentColor" value="#1d4ed8"/></label>
+    <label>Фон карточек<input type="color" id="cardBgColor" value="#ffffff"/></label>
+    <label>Прозрачность карточек<input type="range" id="cardOpacity" min="0.3" max="1" step="0.05" value="0.9"/></label>
+    <button id="applyTheme">Применить стиль</button>
+    <details><summary>Расширенный CSS</summary><textarea id="themeCss" rows="6"></textarea></details>
+  </section>
+
+  <section class="panel" id="previewContainer"><h2>Предпросмотр</h2><div id="preview"></div></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
