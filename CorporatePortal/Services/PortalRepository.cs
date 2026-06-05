@@ -3,7 +3,7 @@ using CorporatePortal.Api.Models;
 
 namespace CorporatePortal.Api.Services;
 
-public sealed class InMemoryPortalRepository : IPortalRepository
+public sealed class PortalRepository : IPortalRepository
 {
     private readonly object syncRoot = new();
     private readonly List<PortalPage> pages = new();
@@ -11,7 +11,7 @@ public sealed class InMemoryPortalRepository : IPortalRepository
     private int nextGroupId = 1;
     private int nextLinkId = 1;
 
-    public InMemoryPortalRepository()
+    public PortalRepository()
     {
         Seed();
     }
@@ -297,35 +297,33 @@ public sealed class InMemoryPortalRepository : IPortalRepository
             PortalPage = page
         };
 
-        group.Links.AddRange(
-        [
-            new PortalLink
-            {
-                Id = nextLinkId++,
-                LinkGroupId = group.Id,
-                Title = "Документация",
-                Url = "https://intranet.example.com/docs",
-                Description = "Регламенты, инструкции и база знаний",
-                Icon = "book",
-                SortOrder = 10,
-                IsActive = true,
-                OpenInNewTab = true,
-                LinkGroup = group
-            },
-            new PortalLink
-            {
-                Id = nextLinkId++,
-                LinkGroupId = group.Id,
-                Title = "Service Desk",
-                Url = "https://intranet.example.com/helpdesk",
-                Description = "Заявки в ИТ и административные службы",
-                Icon = "support",
-                SortOrder = 20,
-                IsActive = true,
-                OpenInNewTab = true,
-                LinkGroup = group
-            }
-        ]);
+        group.Links.Add(new PortalLink
+        {
+            Id = nextLinkId++,
+            LinkGroupId = group.Id,
+            Title = "Документация",
+            Url = "https://intranet.example.com/docs",
+            Description = "Регламенты, инструкции и база знаний",
+            Icon = "book",
+            SortOrder = 10,
+            IsActive = true,
+            OpenInNewTab = true,
+            LinkGroup = group
+        });
+
+        group.Links.Add(new PortalLink
+        {
+            Id = nextLinkId++,
+            LinkGroupId = group.Id,
+            Title = "Service Desk",
+            Url = "https://intranet.example.com/helpdesk",
+            Description = "Заявки в ИТ и административные службы",
+            Icon = "support",
+            SortOrder = 20,
+            IsActive = true,
+            OpenInNewTab = true,
+            LinkGroup = group
+        });
 
         page.LinkGroups.Add(group);
         pages.Add(page);
