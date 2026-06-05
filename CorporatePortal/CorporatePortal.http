@@ -1,6 +1,23 @@
 @CorporatePortal_HostAddress = http://localhost:5156
 
-GET {{CorporatePortal_HostAddress}}/weatherforecast/
+GET {{CorporatePortal_HostAddress}}/api/portal-pages
 Accept: application/json
 
 ###
+
+GET {{CorporatePortal_HostAddress}}/api/portal-pages/1
+Accept: application/json
+
+###
+
+POST {{CorporatePortal_HostAddress}}/api/portal-pages
+Content-Type: application/json
+
+{
+  "title": "HR Portal",
+  "welcomeText": "Добро пожаловать на страницу HR",
+  "logoUrl": null,
+  "backgroundType": "color",
+  "backgroundValue": "#ffffff",
+  "isActive": true
+}
