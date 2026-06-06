@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Управление корпоративным порталом</title>
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body class="admin-page">
+  <header class="shell admin-hero">
+    <div>
+      <p class="eyebrow">Администрирование</p>
+      <h1>Управление корпоративным порталом</h1>
+      <p>Редактируйте страницу, группы ссылок, ссылки, модули и дни рождения без изменения HTML-файлов.</p>
+    </div>
+    <a class="admin-link" href="/">Открыть портал</a>
+  </header>
+
+  <main class="shell admin-grid">
+    <section class="panel admin-section">
+      <h2>Основная страница</h2>
+      <form id="page-form" class="stack-form">
+        <label>Заголовок<input name="title" required maxlength="200"></label>
+        <label>Приветствие<textarea name="welcomeText" rows="3" maxlength="500"></textarea></label>
+        <label>URL логотипа<input name="logoUrl" maxlength="1000"></label>
+        <label>Тип фона<input name="backgroundType" maxlength="50"></label>
+        <label>Значение фона<input name="backgroundValue" maxlength="1000"></label>
+        <label class="check"><input name="isActive" type="checkbox"> Активна</label>
+        <button type="submit">Сохранить страницу</button>
+      </form>
+    </section>
+
+    <section class="panel admin-section">
+      <h2>Группы ссылок</h2>
+      <form id="group-form" class="stack-form">
+        <input type="hidden" name="id">
+        <label>Название<input name="title" required maxlength="200"></label>
+        <label>Описание<input name="description" maxlength="500"></label>
+        <label>Иконка/эмодзи<input name="icon" maxlength="1000"></label>
+        <label>Порядок<input name="sortOrder" type="number" value="10"></label>
+        <label class="check"><input name="isVisible" type="checkbox" checked> Видима</label>
+        <button type="submit">Сохранить группу</button>
+        <button type="button" class="secondary" data-reset="group-form">Очистить</button>
+      </form>
+      <div id="groups-list" class="admin-list"></div>
+    </section>
+
+    <section class="panel admin-section">
+      <h2>Ссылки</h2>
+      <form id="link-form" class="stack-form">
+        <input type="hidden" name="id">
+        <label>Группа<select name="linkGroupId" required></select></label>
+        <label>Название<input name="title" required maxlength="200"></label>
+        <label>URL<input name="url" required maxlength="2000"></label>
+        <label>Описание<input name="description" maxlength="500"></label>
+        <label>Иконка/эмодзи<input name="icon" maxlength="1000"></label>
+        <label>Порядок<input name="sortOrder" type="number" value="10"></label>
+        <label class="check"><input name="isActive" type="checkbox" checked> Активна</label>
+        <label class="check"><input name="openInNewTab" type="checkbox" checked> Открывать в новой вкладке</label>
+        <button type="submit">Сохранить ссылку</button>
+        <button type="button" class="secondary" data-reset="link-form">Очистить</button>
+      </form>
+      <div id="links-list" class="admin-list"></div>
+    </section>
+
+    <section class="panel admin-section">
+      <h2>Модули</h2>
+      <form id="module-form" class="stack-form">
+        <input type="hidden" name="id">
+        <label>Тип<select name="type"><option>ImportantInfo</option><option>Birthdays</option><option>Weather</option><option>Text</option><option>Html</option></select></label>
+        <label>Заголовок<input name="title" required maxlength="200"></label>
+        <label>Контент<textarea name="content" rows="4"></textarea></label>
+        <label>Settings JSON<textarea name="settingsJson" rows="3"></textarea></label>
+        <label>Порядок<input name="sortOrder" type="number" value="10"></label>
+        <label class="check"><input name="isVisible" type="checkbox" checked> Видим</label>
+        <button type="submit">Сохранить модуль</button>
+        <button type="button" class="secondary" data-reset="module-form">Очистить</button>
+      </form>
+      <div id="modules-list" class="admin-list"></div>
+    </section>
+
+    <section class="panel admin-section wide">
+      <h2>Дни рождения</h2>
+      <form id="birthday-form" class="inline-form">
+        <input type="hidden" name="id">
+        <label>ФИО<input name="fullName" required maxlength="250"></label>
+        <label>Дата рождения<input name="birthDate" type="date" required></label>
+        <label>Подразделение<input name="department" maxlength="250"></label>
+        <label class="check"><input name="isActive" type="checkbox" checked> Активен</label>
+        <button type="submit">Сохранить</button>
+        <button type="button" class="secondary" data-reset="birthday-form">Очистить</button>
+      </form>
+      <div id="birthdays-list" class="admin-list columns"></div>
+    </section>
+  </main>
+
+  <div id="toast" role="status"></div>
+  <script src="/js/admin.js"></script>
+</body>
+</html>
