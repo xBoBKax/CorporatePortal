@@ -17,5 +17,7 @@
         public bool IsActive { get; set; } = true;
 
         public List<LinkGroup> LinkGroups { get; set; } = new List<LinkGroup>();
+
+        public List<PortalModule> Modules { get; set; } = new List<PortalModule>();
     }
 }

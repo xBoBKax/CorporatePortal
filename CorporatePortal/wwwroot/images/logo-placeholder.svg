@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="104" viewBox="0 0 320 104" role="img" aria-label="ЭРИС">
+  <rect width="320" height="104" fill="transparent"/>
+  <g transform="translate(8 18)">
+    <path d="M42 0 84 0 100 16 58 58 16 58 0 42Z" fill="#ffe329"/>
+    <path d="M16 16 58 16 74 32 32 74 0 74 0 32Z" fill="#0879c7"/>
+    <path d="M24 30h56l-4 10H20zm-8 20h56l-4 10H12z" fill="#ffe329"/>
+  </g>
+  <text x="120" y="68" font-family="Arial Black, Arial, sans-serif" font-size="48" font-style="italic" fill="#0879c7">ЭРИС</text>
+</svg>
